@@ -1,0 +1,23 @@
+{
+  "name": "express-todo",
+  "version": "0.0.1",
+  "description": "A simple todo list web using ExpressJS and MongoDB",
+  "main": "start.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tmillican/express-todo.git"
+  },
+  "keywords": [
+    "todo"
+  ],
+  "author": "Travis Millican",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tmillican/express-todo/issues"
+  },
+  "homepage": "https://github.com/tmillican/express-todo#readme"
+}

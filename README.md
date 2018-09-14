@@ -45,8 +45,11 @@ Create a data directory for MongoDB. For example:
 
     mkdir -p ~/mongo/db
 
-Run `mongod --dbpath <path to data directory>` to start the MonogoDB server. If
-you omit the `--dbpath` option, the default path is `/data/db`.
+Start the MongoDB server:
+
+    mongod --dbpath <path to data directory>
+
+If you omit the `--dbpath` option, the default path is `/data/db`.
 
 ### Install NodeJS Dependencies
 

@@ -1,0 +1,7 @@
+body {
+  padding-top: 5rem;
+}
+#todo-header, #todo-list {
+  padding: 1rem 0.5rem;
+  text-align: center;
+}

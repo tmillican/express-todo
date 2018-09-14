@@ -37,9 +37,9 @@ Select the "Community Server" tab, then download and install MonogDB.
 See https://docs.mongodb.com/manual/administration/install-community for
 detailed installation instructions.
 
-On Mac OS, you may wish to install via homebrew instead:
+Or, if using homebrew on Mac:
 
-    brew update && brew install mongodb
+    brew install mongodb
 
 Create a data directory for MongoDB. For example:
 

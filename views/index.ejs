@@ -2,17 +2,98 @@
     <main role="main" class="container">
       <div id="todo-header">
         <h1>Todo Express</h1>
-        <p class="lead">Instructions go here.</p>
+        <p class="lead">Describe your taks below. Press 'done' to remove a
+        task when it is completed.</p>
       </div>
 
       <div id="todo-list">
-        <div>
-          This is a todo item.
-        </div>
-
-        <div>
-          This is another todo item.
-        </div>
       </div>
+
+      <script>
+       $(function() {
+         $.getJSON("/api/todos", function(data) {
+           for (var index in data) {
+             addTodoForm(data[index]).show();
+           }
+           addTodoForm().show();
+         });
+       });
+
+       function addTodoForm(todo) {
+         var form = $($("#todo-template").html());
+         form.hide();
+         if (todo) {
+           setTodoForm(form, todo);
+         } else {
+           form.find("input[name=description]").attr("placeholder", "new todo");
+           form.find("input[name=done]").hide();
+         }
+         form.find("input[name=description]").keypress(function(e) {
+           if(e.which == 13) {
+             upsertTodo(form);
+           }
+         });
+
+         form.find("input[name=save]").click(function() { upsertTodo(form); });
+         form.find("input[name=done]").click(function() { deleteTodo(form); });
+         $("#todo-list").prepend(form);
+         return form;
+       }
+
+       function upsertTodo(form) {
+         var postBody = {};
+         if (form.find("input[name=_id]").val()) {
+           var formData = form.serializeArray();
+           for (var index in formData) {
+             postBody[formData[index].name] = formData[index].value;
+           }
+           postBody.__v = parseInt(postBody.__v);
+           $.post("/api/todos/update", postBody, function(responseData) {
+             setTodoForm(form, responseData);
+           });
+           flashSuccess(form);
+         } else {
+           postBody.description = form.find("input[name=description]").val();
+           $.post("/api/todos/create", postBody, function(responseData) {
+             setTodoForm(form, responseData);
+             flashSuccess(form);
+             form.find("input[name=done]").show();
+             addTodoForm().slideDown();
+           });
+         }
+       }
+
+       function deleteTodo(form) {
+         var postBody = {};
+         postBody._id = form.find("input[name=_id]").val();
+         $.post("/api/todos/delete", postBody, function() { form.slideUp(); });
+       }
+
+       function setTodoForm(form, todo) {
+         form.find("input[name=_id]").val(todo._id);
+         form.find("input[name=__v]").val(todo.__v);
+         form.find("input[name=description]").val(todo.description);
+         form.find("input[name=description]").attr("placeholder", "update");
+         form.find("input[name=done]").show();
+       }
+
+       function flashSuccess(form) {
+         form.find("input[name=save]").val("success!");
+         setTimeout(function() {
+           form.find("input[name=save]").val("save");
+         }, 1000);
+       }
+      </script>
+
+      <script id="todo-template" type="template">
+       <form action="javascript:void(0);" class="row col-md-12">
+         <input type="hidden" name="_id">
+         <input type="hidden" name="__v">
+         <input type="text" name="description" class="col-md-9">
+         <input type="button" name="save" value="save" class="col-md-2">
+         <input type="button" name="done" value="done" class="col-md-1">
+       </form>
+      </script>
+
     </main><!-- /.container -->
 <% include footer %>

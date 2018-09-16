@@ -3,6 +3,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import uuidv4 from 'uuid/v4';
 
+import config from './config';
 import apiRouter from './routers/apiRouter';
 import webRouter from './routers/webRouter';
 
@@ -16,12 +17,11 @@ app.use('/api', apiRouter);
 app.use('/', webRouter);
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/express-todo',
-                 { useNewUrlParser: true })
+mongoose.connect(config.mongoUrl, { useNewUrlParser: true })
   .then(() => {
-    console.log("Connected to database.");
-    app.listen(3000, '127.0.0.1', () => {
-      console.log('Server running at http://localhost:3000');
+    console.log(`Connected to database: ${config.mongoUrl}`);
+    app.listen(config.port, () => {
+      console.log(`Server listening on port ${config.port}.`);
     });
   })
   .catch((err) => console.error(err));

@@ -1,7 +1,6 @@
 import bodyParser from 'body-parser';
 import express from 'express';
 import mongoose from 'mongoose';
-import uuidv4 from 'uuid/v4';
 
 import config from './config';
 import apiRouter from './routers/apiRouter';
